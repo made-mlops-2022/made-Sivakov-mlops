@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mainapp:
+    build: ./
+    container_name: mlops_main_app
+    environment:
+      - PYTHONUNBUFFERED=True
+    restart: on-failure
+    volumes:
+      - .:/code
+    ports:
+      - "8080:8080"
+    command: python main.py
