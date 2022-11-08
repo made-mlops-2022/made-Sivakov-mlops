@@ -1,0 +1,6 @@
+model_type: KNeighborsClassifier
+train_data_file: '../../data/source_data/heart_cleveland_upload.csv'
+output_model_file: './saved_models/new_model'
+metric_path: './metric_path_file'
+model_params:
+  n_neighbors: 10
