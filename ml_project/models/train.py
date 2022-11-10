@@ -1,12 +1,12 @@
 import logging
 from datetime import datetime
 
-from models.utils.models_fabric import ModelsFabric
-from models.entities.train_params import TrainParams
+from ml_project.models.utils.models_fabric import ModelsFabric
+from ml_project.models.entities.train_params import TrainParams
 from marshmallow_dataclass import class_schema
-from models.utils.persistence_manager import PersistenceModelManager
-from models.utils.implemented_models import ImplementedModelsList
-from models.entities.preprocessed_data import PreprocessedData
+from ml_project.models.utils.persistence_manager import PersistenceModelManager
+from ml_project.models.utils.implemented_models import ImplementedModelsList
+from ml_project.models.entities.preprocessed_data import PreprocessedData
 import yaml
 import pandas as pd
 

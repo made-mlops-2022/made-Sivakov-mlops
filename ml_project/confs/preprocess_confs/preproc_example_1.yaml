@@ -1,0 +1,3 @@
+source_data_file: './data/source_data/heart_cleveland_upload.csv'
+columns_to_delete: []
+hot_encoding_columns: ['cp', 'restecg', 'slope', 'thal']

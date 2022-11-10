@@ -1,7 +1,6 @@
 model_type: RandomForestClassifier
-train_data_file: '../../data/source_data/heart_cleveland_upload.csv'
-output_model_file: './saved_models/new_model'
-metric_path: './metric_path_file'
+train_data_file: './data/splitted_data/train_data/train_data_1.csv'
+output_model_file: './ml_project/models/saved_models/new_model'
 model_params:
   n_estimators: 100
   criterion: 'gini'

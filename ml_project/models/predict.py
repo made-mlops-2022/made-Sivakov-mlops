@@ -2,8 +2,8 @@ import logging
 import yaml
 import pandas as pd
 from marshmallow_dataclass import class_schema
-from entities.prediction_params import PredictionParams
-from models.utils.persistence_manager import PersistenceModelManager
+from ml_project.models.entities.prediction_params import PredictionParams
+from ml_project.models.utils.persistence_manager import PersistenceModelManager
 logger = logging.getLogger()
 
 
