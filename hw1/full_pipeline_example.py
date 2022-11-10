@@ -31,22 +31,22 @@ if __name__ == '__main__':
     data_process = DataPreprocessing(source_data, params.hot_encoding_columns, params.columns_to_delete)
     data_process.start()
 
-    path_to_save_processed_data = './data/preprocessed_data/preproc_1.csv'
+    path_to_save_processed_data = 'data/preprocessed_data/preproc_1.csv'
     data_process.save(path_to_save_processed_data)
 
     logger.info('End of data preprocessing')
 
     # Then we should split data
-    path_to_train_data = './data/splitted_data/train_data/train_data_1.csv'
-    path_to_eval_data_x = './data/splitted_data/eval_data/eval_data_1_x.csv'
-    path_to_eval_data_y = './data/splitted_data/eval_data/eval_data_1_y.csv'
+    path_to_train_data = 'data/splitted_data/train_data/train_data_1.csv'
+    path_to_eval_data_x = 'data/splitted_data/eval_data/eval_data_1_x.csv'
+    path_to_eval_data_y = 'data/splitted_data/eval_data/eval_data_1_y.csv'
     split_data(path_to_save_processed_data, path_to_train_data, path_to_eval_data_x, path_to_eval_data_y)
 
     # Then train
     TrainParamsSchema = class_schema(TrainParams)
     logger.info('Start of train_data process')
 
-    train_config_file = './ml_project/confs/models_confs/random_forest_train_params.yaml'
+    train_config_file = 'ml_project/confs/models_confs/random_forest_train_params.yaml'
     with open(train_config_file, 'r') as f:
         schema = TrainParamsSchema()
         params: TrainParams = schema.load(yaml.safe_load(f))
@@ -84,8 +84,8 @@ if __name__ == '__main__':
     logger.info('End prediction process')
 
     # Then eval
-    eval_data_x = pd.read_csv('./data/pred_1.csv')
-    eval_data_y = pd.read_csv('./data/splitted_data/eval_data/eval_data_1_y.csv')
+    eval_data_x = pd.read_csv('data/pred_1.csv')
+    eval_data_y = pd.read_csv('data/splitted_data/eval_data/eval_data_1_y.csv')
     evaluate(y_pred=eval_data_x, y_true=eval_data_y)
 
     logger.info('End example pipeline')

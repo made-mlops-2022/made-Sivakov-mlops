@@ -1,5 +1,5 @@
 import pickle
-from ml_project.models.utils.implemented_models import ImplementedModelsList
+from models.utils.implemented_models import ImplementedModelsList
 
 
 class PersistenceModelManager:

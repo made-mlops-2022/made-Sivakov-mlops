@@ -2,9 +2,8 @@ import pandas as pd
 import logging
 import yaml
 from marshmallow_dataclass import class_schema
-from ml_project.models.entities.preprocessed_reqs import PreprocessedReqs
+from models.entities.preprocessed_reqs import PreprocessedReqs
 from copy import copy
-from sklearn.preprocessing import OneHotEncoder
 
 logger = logging.getLogger()
 

@@ -1,7 +1,7 @@
 version: '3'
 services:
   mainapp:
-    build: ./
+    build: ..
     container_name: mlops_main_app
     environment:
       - PYTHONUNBUFFERED=True
@@ -10,4 +10,4 @@ services:
       - .:/code
     ports:
       - "8080:8080"
-    command: python full_pipeline_example.py
+    command: cd hw1 && python full_pipeline_example.py
