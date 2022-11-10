@@ -10,4 +10,4 @@ services:
       - .:/code
     ports:
       - "8080:8080"
-    command: python full_pipeline_example.py
+    command: cd hw1 && python full_pipeline_example.py
