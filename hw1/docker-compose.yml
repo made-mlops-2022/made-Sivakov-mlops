@@ -1,7 +1,7 @@
 version: '3'
 services:
   mainapp:
-    build: ./
+    build: ..
     container_name: mlops_main_app
     environment:
       - PYTHONUNBUFFERED=True

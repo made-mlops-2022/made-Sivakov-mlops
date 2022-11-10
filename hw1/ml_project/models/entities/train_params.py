@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
-from ml_project.models.entities.models_params import RandomForestClassifierParams
-from ml_project.models.utils.implemented_models import ImplementedModels, ImplementedModelsParams
+from models.entities.models_params import RandomForestClassifierParams
+from models.utils.implemented_models import ImplementedModels, ImplementedModelsParams
 
 
 @dataclass()

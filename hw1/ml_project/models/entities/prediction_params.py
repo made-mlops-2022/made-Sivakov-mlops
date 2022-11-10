@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from ml_project.models.utils.implemented_models import ImplementedModels
+from models.utils.implemented_models import ImplementedModels
 
 
 @dataclass()
