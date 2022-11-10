@@ -1,4 +1,4 @@
-from models.implemented_models import ImplementedModels, ImplementedModelsList
+from models.utils.implemented_models import ImplementedModels, ImplementedModelsList
 from entities.train_params import TrainParams
 from dataclasses import asdict
 import logging

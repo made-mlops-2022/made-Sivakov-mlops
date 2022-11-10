@@ -1,12 +1,11 @@
 import logging
-import time
 from datetime import datetime
 
-from models.models_fabric import ModelsFabric
+from models.utils.models_fabric import ModelsFabric
 from models.entities.train_params import TrainParams
 from marshmallow_dataclass import class_schema
-from persistence_manager import PersistenceModelManager
-from implemented_models import ImplementedModelsList
+from models.utils.persistence_manager import PersistenceModelManager
+from models.utils.implemented_models import ImplementedModelsList
 from models.entities.preprocessed_data import PreprocessedData
 import yaml
 import pandas as pd
@@ -21,7 +20,7 @@ class TrainProcess:
         self.data = preprocessed_data
 
     def start_train(self):
-        logger.debug('Start train')
+        logger.debug('Start train_data')
         self.model.fit(X=self.data.X, y=self.data.y)
         logger.debug('Model fitted')
 
@@ -29,13 +28,10 @@ class TrainProcess:
         PersistenceModelManager.serialize_model_to_file(self.model, output_model_file)
         logger.debug(f'Model saved in {output_model_file}')
 
-    def generate_new_model_name(self):
-        return f'{str(self.model)}_{datetime.now()}'
-
 
 if __name__ == '__main__':
     TrainParamsSchema = class_schema(TrainParams)
-    logger.info('Start of train process')
+    logger.info('Start of train_data process')
 
     train_config_file = '../confs/models_confs/random_forest_train_params.yaml'
     with open(train_config_file, 'r') as f:
@@ -44,6 +40,8 @@ if __name__ == '__main__':
 
     train_data_file: str = params.train_data_file
     train_data: pd.DataFrame = pd.read_csv(train_data_file)
+
+    # ToDo: rewrite on implemented preprocess data
     preprocessed_data = PreprocessedData(train_data.drop(columns=['condition']), train_data['condition'])
 
     train_process: TrainProcess = TrainProcess(params, preprocessed_data)
@@ -52,4 +50,4 @@ if __name__ == '__main__':
     train_process.start_train()
     train_process.save_model(fitted_model_file)
 
-    logger.info('End of train process')
+    logger.info('End of train_data process')

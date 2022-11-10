@@ -1,4 +1,5 @@
 import pickle
+from models.utils.implemented_models import ImplementedModelsList
 
 
 class PersistenceModelManager:
@@ -9,6 +10,6 @@ class PersistenceModelManager:
             pickle.dump(model, f)
 
     @staticmethod
-    def deserialize_model_from_file(filename: str):
+    def deserialize_model_from_file(filename: str) -> ImplementedModelsList:
         with open(filename, 'rb') as f:
             return pickle.load(f)
