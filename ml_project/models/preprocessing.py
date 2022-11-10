@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import yaml
 from marshmallow_dataclass import class_schema
-from models.entities.preprocessed_reqs import PreprocessedReqs
+from ml_project.models.entities.preprocessed_reqs import PreprocessedReqs
 from copy import copy
 
 logger = logging.getLogger()

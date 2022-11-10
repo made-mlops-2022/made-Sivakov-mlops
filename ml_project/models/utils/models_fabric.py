@@ -1,5 +1,5 @@
-from models.utils.implemented_models import ImplementedModels, ImplementedModelsList
-from models.entities.train_params import TrainParams
+from ml_project.models.utils.implemented_models import ImplementedModels, ImplementedModelsList
+from ml_project.models.entities.train_params import TrainParams
 from dataclasses import asdict
 import logging
 logger = logging.getLogger()
