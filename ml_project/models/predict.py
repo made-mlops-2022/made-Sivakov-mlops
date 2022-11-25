@@ -8,16 +8,21 @@ logger = logging.getLogger()
 
 
 class PredictionProcess:
-    def __init__(self, pred_params: PredictionParams, data):
-        self.model = PersistenceModelManager.deserialize_model_from_file(pred_params.model_file)
-        self.data = data
+    def __init__(self, prediction_config_dir: str):
+        self.PredictionSchema = class_schema(PredictionParams)()
 
-    def start(self):
-        self.predictions = self.model.predict(self.data)
+        with open(prediction_config_dir, 'r') as f:
+            self.params: PredictionParams = self.PredictionSchema.load(yaml.safe_load(f))
+
+        self.model = PersistenceModelManager.deserialize_model_from_file(self.params.model_file)
+
+    def start(self, data):
+        self.predictions = self.model.predict(data)
+        return self.predictions
 
     # ToDo: isolate save logic in PersistanceDataManager class in persistance_manager.py module
-    def save(self, output_prediction_file):
-        pd.DataFrame(data=self.predictions).to_csv(output_prediction_file)
+    def save(self):
+        pd.DataFrame(data=self.predictions).to_csv(self.params.output_predictions_file)
 
 
 if __name__ == '__main__':
@@ -33,8 +38,8 @@ if __name__ == '__main__':
     with open(input_features_file, 'r') as f:
         input_features = pd.read_csv(f)
 
-    prediction_process: PredictionProcess = PredictionProcess(params, input_features)
-    prediction_process.start()
-    prediction_process.save(params.output_predictions_file)
+    prediction_process: PredictionProcess = PredictionProcess(prediction_config)
+    prediction_process.start(input_features)
+    prediction_process.save()
 
     logger.info('End prediction process')
