@@ -1,4 +1,3 @@
-input_data_file: './data/splitted_data/eval_data/eval_data_1.csv'
 model_file: './ml_project/models/saved_models/new_model'
 model_type: RandomForestClassifier
 output_predictions_file: './data/pred_1.csv'

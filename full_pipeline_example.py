@@ -65,21 +65,17 @@ if __name__ == '__main__':
     logger.info('End of train_data process')
 
     # Then predict
-    PredictionSchema = class_schema(PredictionParams)
     logger.info('Start prediction process')
 
     prediction_config = './ml_project/confs/prediction_confs/pred_conf_1.yaml'
-    with open(prediction_config, 'r') as f:
-        schema = PredictionSchema()
-        params: PredictionParams = schema.load(yaml.safe_load(f))
+    prediction_process: PredictionProcess = PredictionProcess(prediction_config)
+    input_features_file = './data/splitted_data/eval_data/eval_data_1.csv'
 
-    input_features_file = params.input_data_file
     with open(input_features_file, 'r') as f:
         input_features = pd.read_csv(f)
 
-    prediction_process: PredictionProcess = PredictionProcess(params, input_features)
-    prediction_process.start()
-    prediction_process.save(params.output_predictions_file)
+    prediction_process.start(input_features)
+    prediction_process.save()
 
     logger.info('End prediction process')
 
