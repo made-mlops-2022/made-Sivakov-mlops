@@ -1,4 +1,6 @@
 import logging
+import os.path
+
 import yaml
 import pandas as pd
 from marshmallow_dataclass import class_schema
@@ -14,11 +16,16 @@ class PredictionProcess:
         with open(prediction_config_dir, 'r') as f:
             self.params: PredictionParams = self.PredictionSchema.load(yaml.safe_load(f))
 
-        self.model = PersistenceModelManager.deserialize_model_from_file(self.params.model_file)
+        path_to_ml_project = os.path.dirname(__file__) + '/../'
+        self.model = PersistenceModelManager.deserialize_model_from_file(path_to_ml_project +
+                                                                         self.params.model_file)
 
     def start(self, data):
         self.predictions = self.model.predict(data)
         return self.predictions
+
+    def health_checker(self):
+        return True
 
     # ToDo: isolate save logic in PersistanceDataManager class in persistance_manager.py module
     def save(self):

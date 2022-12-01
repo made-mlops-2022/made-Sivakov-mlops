@@ -1,3 +1,6 @@
+# Homework2
+Смотри ридми в online_inference
+
 # Homework1
 
 ## Интро к домашней работе
