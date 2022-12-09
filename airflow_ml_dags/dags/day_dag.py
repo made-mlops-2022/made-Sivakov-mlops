@@ -14,20 +14,25 @@ default_args = {
 }
 
 with DAG(
-        "gen_data",
+        "day_dag",
         default_args=default_args,
+        schedule_interval="@daily",
         start_date=days_ago(5),
 ) as dag:
-    download = DockerOperator(
-        image="airflow-download",
-        command="/data/raw/{{ ds }}",
+    predict = DockerOperator(
+        image="airflow-predict",
+            command="/data/raw/{{ ds }}",
         network_mode="bridge",
-        task_id="docker-airflow-download",
+        task_id="docker-airflow-predict",
         do_xcom_push=False,
         mount_tmp_dir=False,
         mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
                       target="/data",
-                      type='bind')]
+                      type='bind'),
+                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/prediction/",
+                      target="/prediction",
+                      type='bind')
+                ]
     )
 
-    download
+    predict

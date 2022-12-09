@@ -21,7 +21,7 @@ def split(input_dir: str, output_train_dir, output_val_dir):
     train_df.to_csv(os.path.join(output_train_dir, "train_data.csv"))
 
     val_df = pd.concat([X_val, pd.DataFrame(data=y_val)], axis="columns")
-    val_df.to_csv(os.path.join(output_train_dir, "val_data.csv"))
+    val_df.to_csv(os.path.join(output_val_dir, "val_data.csv"))
 
 
 if __name__ == '__main__':

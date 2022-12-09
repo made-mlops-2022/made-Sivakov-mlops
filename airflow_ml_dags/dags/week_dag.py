@@ -14,14 +14,14 @@ default_args = {
 }
 
 with DAG(
-        "11_docker",
+        "week_dag",
         default_args=default_args,
-        schedule_interval="@daily",
+        schedule_interval="@weekly",
         start_date=days_ago(5),
 ) as dag:
     download = DockerOperator(
         image="airflow-download",
-        command="/data/raw/{{ ds }}",
+            command="/data/raw/{{ ds }}",
         network_mode="bridge",
         task_id="docker-airflow-download",
         do_xcom_push=False,
@@ -52,19 +52,38 @@ with DAG(
                       target="/data",
                       type='bind')]
     )
-    #
-    # train = DockerOperator()
-    #
-    # validate = DockerOperator()
-    #
-    # predict = DockerOperator(
-    #     image="airflow-predict",
-    #     command="--input-dir /data/processed/{{ ds }} --output-dir /data/predicted/{{ ds }}",
-    #     task_id="docker-airflow-predict",
-    #     do_xcom_push=False,
-    #     mount_tmp_dir=False,
-    #     mounts=[Mount(source="/Users/mikhailmar/IdeaProjects/airflow-examples/data/", target="/data", type='bind')]
-    # )
 
-    # download >> preprocess >> predict
-    download >> preprocess >> split
+    train = DockerOperator(
+        image="airflow-train",
+        command="--input-dir /data/splitted/train/{{ ds }} --output-model-dir /models/{{ ds }}",
+        task_id="docker-airflow-train",
+        do_xcom_push=False,
+        mount_tmp_dir=False,
+        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+                      target="/data",
+                      type='bind'),
+                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/models/",
+                      target="/models",
+                      type='bind'),
+                ]
+    )
+
+    validate = DockerOperator(
+        image="airflow-validate",
+        command="--input-data-dir /data/splitted/val/{{ ds }} --input-model-dir /models/{{ ds }} --output-data-dir /validation/{{ ds }}",
+        task_id="docker-airflow-validate",
+        do_xcom_push=False,
+        mount_tmp_dir=False,
+        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+                      target="/data",
+                      type='bind'),
+                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/models/",
+                      target="/models",
+                      type='bind'),
+                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/validation/",
+                      target="/validation",
+                      type='bind')
+                ]
+    )
+
+    download >> preprocess >> split >> train >> validate
