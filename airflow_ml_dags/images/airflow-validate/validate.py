@@ -19,8 +19,10 @@ def validate(input_data_dir, input_model_dir, output_data_dir):
     with open(os.path.join(input_model_dir, "rf_model"), 'rb') as f:
         model = pickle.load(f)
 
-    prediction = pd.DataFrame(columns=['f1_score'], data=f1_score(y_pred=model.predict(X_test), y_true=y_test))
-    prediction.to_csv(os.path.join(output_data_dir, 'val_results.csv'), index=False)
+    prediction = f1_score(y_pred=model.predict(X_test), y_true=y_test, average='weighted')
+
+    prediction_df = pd.DataFrame(columns=['f1_score'], data=[prediction])
+    prediction_df.to_csv(os.path.join(output_data_dir, 'val_results.csv'), index=False)
 
 
 if __name__ == '__main__':

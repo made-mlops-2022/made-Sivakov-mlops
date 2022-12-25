@@ -1,17 +1,11 @@
 import os
-from datetime import timedelta
 
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.utils.dates import days_ago
 from docker.types import Mount
-
-default_args = {
-    "owner": "airflow",
-    "email": ["airflow@example.com"],
-    "retries": 1,
-    "retry_delay": timedelta(minutes=5),
-}
+from utils import airflow_ml_dags_path as base_path
+from utils import default_args
 
 with DAG(
         "day_dag",
@@ -21,16 +15,19 @@ with DAG(
 ) as dag:
     predict = DockerOperator(
         image="airflow-predict",
-            command="/data/raw/{{ ds }}",
+            command="--input-data-dir /data/splitted/val/{{ ds }} --output-dir /prediction/{{ ds }} --input-model-dir /models/{{ ds }}",
         network_mode="bridge",
         task_id="docker-airflow-predict",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind'),
-                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/prediction/",
+                Mount(source=base_path+"/prediction/",
                       target="/prediction",
+                      type='bind'),
+                Mount(source=base_path+"/models/",
+                      target="/models",
                       type='bind')
                 ]
     )

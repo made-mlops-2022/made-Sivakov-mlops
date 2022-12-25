@@ -1,17 +1,12 @@
 import os
-from datetime import timedelta
 
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.utils.dates import days_ago
 from docker.types import Mount
+from utils import default_args
+from utils import airflow_ml_dags_path as base_path
 
-default_args = {
-    "owner": "airflow",
-    "email": ["airflow@example.com"],
-    "retries": 1,
-    "retry_delay": timedelta(minutes=5),
-}
 
 with DAG(
         "week_dag",
@@ -21,12 +16,12 @@ with DAG(
 ) as dag:
     download = DockerOperator(
         image="airflow-download",
-            command="/data/raw/{{ ds }}",
+        command="/data/raw/{{ ds }}",
         network_mode="bridge",
         task_id="docker-airflow-download",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind')]
     )
@@ -37,7 +32,7 @@ with DAG(
         task_id="docker-airflow-preprocess",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind')]
     )
@@ -48,7 +43,7 @@ with DAG(
         task_id="docker-airflow-split",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind')]
     )
@@ -59,10 +54,10 @@ with DAG(
         task_id="docker-airflow-train",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind'),
-                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/models/",
+                Mount(source=base_path+"/models/",
                       target="/models",
                       type='bind'),
                 ]
@@ -74,13 +69,13 @@ with DAG(
         task_id="docker-airflow-validate",
         do_xcom_push=False,
         mount_tmp_dir=False,
-        mounts=[Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/data/",
+        mounts=[Mount(source=base_path+"/data/",
                       target="/data",
                       type='bind'),
-                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/models/",
+                Mount(source=base_path+"/models/",
                       target="/models",
                       type='bind'),
-                Mount(source="/Users/kr.sivakov/Documents/MADE/ml_ops/hw1/airflow_ml_dags/validation/",
+                Mount(source=base_path+"/validation/",
                       target="/validation",
                       type='bind')
                 ]
